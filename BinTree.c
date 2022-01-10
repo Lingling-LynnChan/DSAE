@@ -73,7 +73,7 @@ deleteTree(BinTree BST,int X) {
 						BST=BST->Left;
 					}else 
 						if (!BST->Left) {
-							BST->Right;
+							BST=BST->Right;
 						}
 				free(Del);
 				}
