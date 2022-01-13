@@ -105,7 +105,6 @@ delete (BinTree AVL,int X) {
 	BinTree Del;
 	if (AVL->Data>X) {
 		AVL->Left=delete(AVL->Left,X);
-		}
 	}else
 		if (AVL->Data<X) {
 			AVL->Right=delete(AVL->Right,X);
@@ -135,6 +134,27 @@ print(BinTree AVL) {
 	printf("%d ",AVL->Data);
 	print(AVL->Right);
 }
+void
+printLevelTools (BinTree AVL,int level) {
+	int i;
+	if (!AVL) {
+		for (i = 0; i < level; i += 1) {
+			printf("  ");
+		}
+		printf("NL\n");
+		return;
+	}
+	printLevelTools(AVL->Right,level+1);
+	for (i = 0; i < level; i += 1) {
+		printf("  ");
+	}
+	printf("%02d\n",AVL->Data);
+	printLevelTools(AVL->Left,level+1);
+}
+void
+printLevel (BinTree AVL) {
+	printLevelTools(AVL,0);
+}
 
 int
 main (int argc, char *argv[]) {
@@ -145,11 +165,9 @@ main (int argc, char *argv[]) {
 		scanf("%d",&x);
 		AVL=insert(AVL,x);
 	}
-	print(AVL);
-	printf("\n");
+	printLevel(AVL);
 	scanf("%d",&x);
 	AVL=delete(AVL,x);
-	print(AVL);
-	printf("\n");
+	printLevel(AVL);
 	return 0;
 }
