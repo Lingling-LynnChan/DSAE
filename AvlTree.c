@@ -134,7 +134,44 @@ addTree (BinTree AVL,int X) {
 }
 BinTree
 delTree (BinTree AVL,int X) {
-	
+	if (!AVL) {
+		return NULL;
+	}
+	if (AVL->Data>X) {
+		AVL->Left=delTree(AVL->Left,X);
+		if (getHeight(AVL->Left)-getHeight(AVL->Right)>1) {
+			if (getHeight(AVL->Left->Left)>getHeight(AVL->Left->Right)) {
+				AVL=LL(AVL);
+			}else {
+				AVL=LR(AVL);
+			}
+		}
+	}else
+		if (AVL->Data<X) {
+			AVL->Right=delTree(AVL->Right,X);
+			if (getHeight(AVL->Right)-getHeight(AVL->Left)>1) {
+				if (getHeight(AVL->Right->Right)>getHeight(AVL->Right->Left)) {
+					AVL=RR(AVL);
+				}else {
+					AVL=RL(AVL);
+				}
+			}
+		}else {
+			if (AVL->Left&&AVL->Right) {
+				BinTree Del=minTree(AVL->Right);
+				AVL->Data=Del->Data;
+				AVL->Right=delTree(AVL->Right,Del->Data);
+			}else {
+				BinTree Del=AVL;
+				if (!AVL->Left) {
+					AVL=AVL->Right;
+				}else {
+					AVL=AVL->Left;
+				}
+				free (Del);
+			}
+		}
+	return AVL;
 }
 
 
@@ -148,9 +185,9 @@ main (int argc, char *argv[]) {
 		AVL=addTree(AVL,x);
 	}
 	printLevel(AVL);
-//	scanf("%d",&x);
-//	AVL=delTree(AVL,x);
-//	printLevel(AVL);
+	scanf("%d",&x);
+	AVL=delTree(AVL,x);
+	printLevel(AVL);
 //	AVL=delAllTree(AVL);
 //	printLevel(AVL);
 	return 0;
