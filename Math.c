@@ -61,6 +61,78 @@ importIntime (Stack S) {
 		scanf("%c",&ch);
 	}
 }
+#define Max 1000
+void
+clear (char* str) {
+	char* s=str;
+	int i=0;
+	while (*s!='\0') {
+		if (*s!=' ') {
+			str[i++]=*s;
+		}
+		s+=1;
+	}if (str[i-1]=='=') {
+		str[i]='\0';
+	}else {
+		str[i]='=';
+		str[i+1]='\0';
+	}
+}
+int
+getNum (int x) {
+	int i=1;
+	while (x/=10) {
+		i++;
+	}
+	return i;
+}
+void
+import (Stack S) {
+	char str[Max],ch;
+	scanf("%[^\n]",str);
+	clear(str);
+	char* s=str;
+	int i,h;
+	sscanf(s,"%d%c",&i,&ch);
+	push(S,i);
+	while (ch!='=') {
+		s+=getNum(i)+1;
+		if (ch=='+') {
+			sscanf(s,"%d%c",&i,&ch);
+			push(S,i);
+		}else
+		if (ch=='-') {
+			sscanf(s,"%d%c",&i,&ch);
+			push(S,-i);
+		}else
+		if (ch=='*') {
+			sscanf(s,"%d%c",&i,&ch);
+			h=pop(S);
+			i+=h;
+			push(S,i);
+		}else
+		if (ch=='/') {
+			sscanf(s,"%d%c",&i,&ch);
+			h=pop(S);
+			i=h/i;
+			push(S,i);
+		}else
+		if (ch=='%') {
+			sscanf(s,"%d%c",&i,&ch);
+			h=pop(S);
+			i=h%i;
+			push(S,i);
+		}else {
+			if (ch!='=') {
+				printf("ERR_WRONG_IMPORT::%c::114514\n",ch);
+				exit(1);
+			}else {
+				push(S,i);
+				return;
+			}
+		}
+	}
+}
 int
 math (Stack S) {
 	int i=pop(S),sum=0;
